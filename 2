@@ -1,0 +1,318 @@
+using OpenQA.Selenium;
+using OpenQA.Selenium.Chrome;
+using OpenQA.Selenium.Firefox;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Text.RegularExpressions;
+using System.Threading;
+using System.Threading.Tasks;
+using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Data;
+using System.Windows.Documents;
+using System.Windows.Input;
+using System.Windows.Media;
+using System.Windows.Media.Imaging;
+using System.Windows.Navigation;
+using System.Windows.Shapes;
+
+namespace toolzcity
+{
+    /// <summary>
+    /// Interaction logic for MainWindow.xaml
+    /// </summary>
+    public partial class MainWindow : Window
+    {
+        public MainWindow()
+        {
+            InitializeComponent();
+        }
+
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+            
+            // Truy cập profile     
+            FirefoxProfile profile = new FirefoxProfile(@"C:\Users\Admin\AppData\Roaming\Mozilla\Firefox\Profiles\d6lixpms.zccc");
+            FirefoxOptions options = new FirefoxOptions();
+            options.Profile = profile;
+            FirefoxDriver driver = new FirefoxDriver(options);
+            for (int i = 0; i < 180; i++)
+            {
+                // Chọn câu hỏi
+                driver.Url = "https://zcity.vn/menu/gift-train";
+                driver.Navigate();
+                Thread.Sleep(10000);
+                var choncauhoi = driver.FindElementByXPath(@"/html/body/ div / div[1] / div[2] / div[2] / div[1] / div[2] / div[2] / div / select");
+                choncauhoi.Click();
+                Thread.Sleep(5000);
+                var choncauhoi2 = driver.FindElementByXPath(@"/html/body/div[1]/div[1]/div[2]/div[2]/div[1]/div[2]/div[2]/div/select/option[15]");
+                choncauhoi2.Click();
+                Thread.Sleep(5000);
+                var luyenngay = driver.FindElementByXPath(@"/html/body/div/div[1]/div[2]/div[2]/div[1]/div[2]/div[3]/button");
+                luyenngay.Click();
+                Thread.Sleep(5000);
+
+                // Lấy nội dung câu hỏi
+                var cauhoi = driver.FindElementByClassName("title-question");
+                string cuong = cauhoi.Text;
+                // Console.WriteLine(cuong);
+
+
+
+                // Lấy số liệu
+
+                // string cuong = "Nguy?n Thu? Dung góp 57 tri?u, Chu Cát Ng?c Nuong góp 53 tri?u, T?ng Chiên góp m?t chi?c xe t?i cu làm phuong ti?n kinh doanh giá 316 tri?u, Cao Th? Giáng Tuy?t cho c? d?i thuê nhà mình làm van phòng mi?n phí v?i giá 15 tri?u/tháng trong 12 tháng, Hoàng Xuân Tru?ng d?ng ý k?t n?i dua s?n ph?m d?n chu?i 117 c?a hàng tiêu th? s?n ph?m ngay khi dua ra th? tru?ng và d?nh giá m?i quan h? k?t n?i này là 250 tri?u. Sau 5 nam, công ty ho?t d?ng quy chu?n bài b?n và h?i d?ng c? dông th?ng nh?t nhân chu?i mô hình t? phân ph?i quy?t d?nh kêu g?i thêm v?n 7 t? cho 5 % c? ph?n. Qu? d?u tu c?a Nguyen Thi sau khi th?m d?nh quy?t d?nh d?ng ý rót v?n. Công ty nhân chu?i t?i mi?n B?c thành công và có chi?n lu?c ph? sóng toàn th? tru?ng Vi?t Nam, thâu tóm nh?ng m?t b?ng d?p, mua l?i các d?i th? nh? l? trên th? tru?ng nên kêu g?i thêm qu? d?u tu. R?t nhi?u qu? d?u tu mu?n tham gia và dã huy d?ng du?c 2245 t? v?i 21 % c? ph?n. Công ty ? d?nh cao phát tri?n thì T?ng Chiên có hi?m khích v?i h?i d?ng c? dông nên quy?t d?nh bán di 86 % s? c? ph?n c?a mình d? d?u tu vào linh v?c khác. H?i T?ng Chiên s? thu v? du?c kho?ng bao nhiêu ti?n?";
+
+                // a1
+                int c1 = cuong.IndexOf("góp");
+                int c2 = cuong.IndexOf("triệu");
+                // Console.WriteLine(c1);
+                // Console.WriteLine(c2);
+                string b1 = cuong.Substring(c1 + 4, c2 - c1 - 5);
+                // Console.WriteLine(b1);
+                int a1 = int.Parse(b1.ToString());
+                // Console.WriteLine(a1);
+                string cuong2 = cuong.Remove(1, c2 + 5);
+
+
+                // a2
+                c1 = cuong2.IndexOf("góp");
+                c2 = cuong2.IndexOf("triệu");
+                b1 = cuong2.Substring(c1 + 4, c2 - c1 - 5);
+                int a2 = int.Parse(b1.ToString());
+                // Console.WriteLine(a2);
+                string cuong3 = cuong2.Remove(1, c2 + 5);
+                // Console.WriteLine(cuong3);
+
+
+                // a3
+                c1 = cuong3.IndexOf("giá");
+                c2 = cuong3.IndexOf("triệu");
+                b1 = cuong3.Substring(c1 + 4, c2 - c1 - 5);
+                int a3 = int.Parse(b1.ToString());
+                // Console.WriteLine(a3);
+                string cuong4 = cuong3.Remove(1, c2 + 5);
+
+
+                // a4
+                c1 = cuong4.IndexOf("giá");
+                c2 = cuong4.IndexOf("triệu");
+                b1 = cuong4.Substring(c1 + 4, c2 - c1 - 5);
+                int a4 = int.Parse(b1.ToString());
+                // Console.WriteLine(a4);
+                string cuong5 = cuong4.Remove(1, c2 + 10);
+                // Console.WriteLine(cuong5);
+
+                // b
+                c1 = cuong5.IndexOf("trong");
+                c2 = cuong5.IndexOf("tháng");
+                b1 = cuong5.Substring(c1 + 6, c2 - c1 - 6);
+                int b = int.Parse(b1.ToString());
+                // Console.WriteLine(b);
+                string cuongb = cuong5.Remove(1, c2 + 5);
+                // Console.WriteLine(cuong6);
+
+                // a5
+                c1 = cuongb.IndexOf("là");
+                c2 = cuongb.IndexOf("triệu");
+                b1 = cuongb.Substring(c1 + 3, c2 - c1 - 4);
+                int a5 = int.Parse(b1.ToString());
+                // Console.WriteLine(a5);
+                string cuong6 = cuongb.Remove(1, c2 + 5);
+                // Console.WriteLine(cuong6);
+
+                // a7
+                c1 = cuong6.IndexOf("vốn");
+                c2 = cuong6.IndexOf("tỷ");
+                b1 = cuong6.Substring(c1 + 4, c2 - c1 - 4);
+                int a7 = int.Parse(b1.ToString());
+                // Console.WriteLine(b1);
+                string cuong7 = cuong6.Remove(1, c2 + 5);
+                // Console.WriteLine(cuong7);
+
+                // a8
+                c1 = cuong7.IndexOf("cho");
+                c2 = cuong7.IndexOf("%");
+                b1 = cuong7.Substring(c1 + 3, c2 - c1 - 3);
+                int a8 = int.Parse(b1.ToString());
+                // Console.WriteLine(a8);
+                string cuong8 = cuong7.Remove(1, c2 + 5);
+                // Console.WriteLine(cuong8);
+
+                // a9
+                c1 = cuong8.IndexOf("được");
+                c2 = cuong8.IndexOf("tỷ");
+                b1 = cuong8.Substring(c1 + 5, c2 - c1 - 5);
+                int a9 = int.Parse(b1.ToString());
+                // Console.WriteLine(a9);
+                string cuong9 = cuong8.Remove(1, c2);
+                // Console.WriteLine(cuong9);
+
+                // a10
+                c1 = cuong9.IndexOf("với");
+                c2 = cuong9.IndexOf("%");
+                b1 = cuong9.Substring(c1 + 4, c2 - c1 - 4);
+                int a10 = int.Parse(b1.ToString());
+                // Console.WriteLine(a10);
+                string cuong10 = cuong9.Remove(1, c2 + 5);
+                // Console.WriteLine(cuong10);
+
+                // a11
+                int a11 = 1;
+                if (cuong10.Contains("tất cả") == false)
+                {
+                    c1 = cuong10.IndexOf("đi");
+                    c2 = cuong10.IndexOf("%");
+                    b1 = cuong10.Substring(c1 + 3, c2 - c1 - 3);
+                    a11 = int.Parse(b1.ToString());
+                    // Console.WriteLine(a11);
+                }
+                // string cuong10 = cuong9.Remove(1, c2 + 5);
+                // Console.WriteLine(cuong10);
+
+                // tinhtoan
+
+                double x1 = a1 * (100 - a8) * (100 - a10) * a11;
+                double x2 = a2 * (100 - a8) * (100 - a10) * a11;
+                double x3 = a3 * (100 - a8) * (100 - a10) * a11;
+                double x4 = a4 * b * (100 - a8) * (100 - a10) * a11;
+                double x5 = a5 * (100 - a8) * (100 - a10) * a11;
+                double y = a10 * (a1 + a2 + a3 + a4 * b + a5);
+                double y1 = x1 / y;
+                double y2 = x2 / y;
+                double y3 = x3 / y;
+                double y4 = x4 / y;
+                double y5 = x5 / y;
+
+                double s1 = Math.Round(((y1 * a9 / 10000) % 1000), 2);
+                double s2 = Math.Round(((y2 * a9 / 10000) % 1000), 2);
+                double s3 = Math.Round(((y3 * a9 / 10000) % 1000), 2);
+                double s4 = Math.Round(((y4 * a9 / 10000) % 1000), 2);
+                double s5 = Math.Round(((y5 * a9 / 10000) % 1000), 2);
+
+
+                string k1 = s1.ToString();
+                string k2 = s2.ToString();
+                string k3 = s3.ToString();
+                string k4 = s4.ToString();
+                string k5 = s5.ToString();
+
+                string z1 = string.Format("{0:0,0.00}", k1);
+                string z2 = string.Format("{0:0,0.00}", k2);
+                string z3 = string.Format("{0:0,0.00}", k3);
+                string z4 = string.Format("{0:0,0.00}", k4);
+                string z5 = string.Format("{0:0,0.00}", k5);
+
+                // Console.WriteLine(z1);
+                // Console.WriteLine(z2);
+                // Console.WriteLine(z3);
+                // Console.WriteLine(z4);
+                // Console.WriteLine(z5);
+
+                Thread.Sleep(5000);
+
+                // sosanh cau4
+                var cau4a = driver.FindElementByXPath(@"/ html / body / div[1] / div[1] / div[2] / div[2] / div[1] / div[2] / div[5] / p");
+                string cau4b = cau4a.Text;
+                if (cau4b.Contains(z1))
+                {
+                    cau4a.Click();
+                };
+                if (cau4b.Contains(z2))
+                {
+                    cau4a.Click();
+                };
+                if (cau4b.Contains(z3))
+                {
+                    cau4a.Click();
+                };
+                if (cau4b.Contains(z4))
+                {
+                    cau4a.Click();
+                };
+                if (cau4b.Contains(z5))
+                {
+                    cau4a.Click();
+                };
+
+                // sosanh cau1
+                var cau1a = driver.FindElementByXPath(@"/html/body/div[1]/div[1]/div[2]/div[2]/div[1]/div[2]/div[2]/p");
+                string cau1b = cau1a.Text;
+                if (cau1b.Contains(z1))
+                {
+                    cau1a.Click();
+                };
+                if (cau1b.Contains(z2))
+                {
+                    cau1a.Click();
+                };
+                if (cau1b.Contains(z3))
+                {
+                    cau1a.Click();
+                };
+                if (cau1b.Contains(z4))
+                {
+                    cau1a.Click();
+                };
+                if (cau1b.Contains(z5))
+                {
+                    cau1a.Click();
+                };
+
+                // sosanh cau2
+                var cau2a = driver.FindElementByXPath(@"/html/body/div[1]/div[1]/div[2]/div[2]/div[1]/div[2]/div[3]/p");
+                string cau2b = cau2a.Text;
+                if (cau2b.Contains(z1))
+                {
+                    cau2a.Click();
+                };
+                if (cau2b.Contains(z2))
+                {
+                    cau2a.Click();
+                };
+                if (cau2b.Contains(z3))
+                {
+                    cau2a.Click();
+                };
+                if (cau2b.Contains(z4))
+                {
+                    cau2a.Click();
+                };
+                if (cau2b.Contains(z5))
+                {
+                    cau2a.Click();
+                };
+
+                // sosanh cau3
+                var cau3a = driver.FindElementByXPath(@"/html/body/div[1]/div[1]/div[2]/div[2]/div[1]/div[2]/div[4]/p");
+                string cau3b = cau3a.Text;
+                if (cau3b.Contains(z1))
+                {
+                    cau3a.Click();
+                };
+                if (cau3b.Contains(z2))
+                {
+                    cau3a.Click();
+                };
+                if (cau3b.Contains(z3))
+                {
+                    cau3a.Click();
+                };
+                if (cau3b.Contains(z4))
+                {
+                    cau3a.Click();
+                };
+                if (cau3b.Contains(z5))
+                {
+                    cau3a.Click();
+                };
+                Thread.Sleep(2000);
+                Console.WriteLine(i);
+            }
+            driver.Url = "https://google.com";
+            driver.Navigate();
+        }
+    }
+}
